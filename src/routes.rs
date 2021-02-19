@@ -1,8 +1,9 @@
-use super::db::Conn as DbConn;
-use rocket_contrib::json::Json;
-use super::models::{User, NewUser};
-use serde_json::Value;
 use rocket::http::RawStr;
+use rocket_contrib::json::Json;
+use serde_json::Value;
+
+use super::db::Conn as DbConn;
+use super::models::{NewUser, User};
 
 #[get("/users", format = "text/html")]
 pub fn get_all(conn: DbConn) -> Json<Value> {
@@ -30,7 +31,7 @@ pub fn find_user(conn: DbConn, name: &RawStr) -> Json<Value> {
 }
 
 #[get("/hello/<name>")]
-pub fn hello(name: &RawStr) ->  Json<Value> {
+pub fn hello(name: &RawStr) -> Json<Value> {
     Json(json!({
     "status": 200,
     "result": format!("Hello, {}!", name.as_str()),

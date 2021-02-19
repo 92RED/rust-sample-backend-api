@@ -1,6 +1,7 @@
 use diesel;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
+
 use super::schema::users;
 use super::schema::users::dsl::users as all_users;
 
@@ -18,6 +19,7 @@ pub struct User {
 pub struct UserData {
     pub username: String,
 }
+
 // this is to insert users to database
 #[derive(Serialize, Deserialize, Insertable)]
 #[table_name = "users"]
@@ -28,7 +30,6 @@ pub struct NewUser {
 }
 
 impl User {
-
     pub fn get_all_users(conn: &PgConnection) -> Vec<User> {
         all_users
             .order(users::id.desc())

@@ -14,10 +14,12 @@ extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
 
-use dotenv::dotenv;
 use std::env;
-use routes::*;
 use std::process::Command;
+
+use dotenv::dotenv;
+
+use routes::*;
 
 mod db;
 mod models;
