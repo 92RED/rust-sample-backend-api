@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   db:
@@ -17,7 +17,7 @@ services:
       - ./:/usr/src/app
     environment:
       ROCKET_ENV: development
-      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
+      DATABASE_URL: "${DATABASE_URL}"
     ports:
       - "${LOCAL_WEB_PORT:-42805}:8080"
     command: bash -c "diesel setup && cargo watch -x run"
