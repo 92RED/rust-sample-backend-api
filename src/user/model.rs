@@ -5,25 +5,10 @@ use diesel::prelude::*;
 use super::schema::users;
 use super::schema::users::dsl::users as all_users;
 
-// this is to get users from the database
-#[derive(Serialize, Queryable)]
+#[derive(Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
+#[table_name = "users"]
 pub struct User {
     pub id: i32,
-    pub username: String,
-    pub password: String,
-    pub first_name: String,
-}
-
-// decode request data
-#[derive(Deserialize)]
-pub struct UserData {
-    pub username: String,
-}
-
-// this is to insert users to database
-#[derive(Serialize, Deserialize, Insertable)]
-#[table_name = "users"]
-pub struct NewUser {
     pub username: String,
     pub password: String,
     pub first_name: String,
@@ -37,7 +22,7 @@ impl User {
             .expect("error!")
     }
 
-    pub fn insert_user(user: NewUser, conn: &PgConnection) -> bool {
+    pub fn insert_user(user: User, conn: &PgConnection) -> bool {
         diesel::insert_into(users::table)
             .values(&user)
             .execute(conn)

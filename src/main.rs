@@ -19,22 +19,21 @@ use std::process::Command;
 
 use dotenv::dotenv;
 
-use routes::*;
-
 mod db;
-mod models;
-mod routes;
-mod schema;
+mod user;
 
 fn rocket() -> rocket::Rocket {
     dotenv().ok();
 
     let database_url = env::var("DATABASE_URL").expect("set DATABASE_URL");
 
+    let path = "/api/v1/";
     let pool = db::init_pool(database_url);
-    rocket::ignite()
-        .manage(pool)
-        .mount("/api/v1/", routes![get_all, new_user, find_user, hello])
+    let mut rocket = rocket::ignite().manage(pool);
+
+    rocket = user::mount(path, rocket);
+
+    return rocket
 }
 
 fn main() {

@@ -2,8 +2,16 @@ use rocket::http::RawStr;
 use rocket_contrib::json::Json;
 use serde_json::Value;
 
+use self::model::User;
 use super::db::Conn as DbConn;
-use super::models::{NewUser, User};
+
+pub mod model;
+pub mod schema;
+
+pub fn mount(basepath: &str, rocket: rocket::Rocket) -> rocket::Rocket {
+    let path = format!("{}{}{}", basepath, "/", "User");
+    rocket.mount(&path, routes![get_all, new_user, find_user, hello])
+}
 
 #[get("/users", format = "text/html")]
 pub fn get_all(conn: DbConn) -> Json<Value> {
@@ -15,7 +23,7 @@ pub fn get_all(conn: DbConn) -> Json<Value> {
 }
 
 #[post("/newUser", format = "application/json", data = "<new_user>")]
-pub fn new_user(conn: DbConn, new_user: Json<NewUser>) -> Json<Value> {
+pub fn new_user(conn: DbConn, new_user: Json<User>) -> Json<Value> {
     Json(json!({
         "status": User::insert_user(new_user.into_inner(), &conn),
         "result": User::get_all_users(&conn).first(),
