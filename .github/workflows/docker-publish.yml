@@ -1,7 +1,7 @@
 name: Docker
 
 on:
-  release:
+  push:
     # Publish `master` as Docker `latest` image.
     branches:
       - master
@@ -22,7 +22,7 @@ jobs:
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
+    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v2
