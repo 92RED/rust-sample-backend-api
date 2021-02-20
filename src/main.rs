@@ -34,18 +34,14 @@ fn rocket() -> rocket::Rocket {
     let pool = db::init_pool(database_url);
     rocket::ignite()
         .manage(pool)
-        .mount(
-            "/api/v1/",
-            routes![get_all, new_user, find_user, hello],
-        )
+        .mount("/api/v1/", routes![get_all, new_user, find_user, hello])
 }
 
 fn main() {
-    let _output =
-        Command::new("sh")
-            .arg("-c")
-            .arg("cd ui && npm start")
-            .spawn()
-            .expect("Failed to start UI Application");
+    let _output = Command::new("sh")
+        .arg("-c")
+        .arg("cd ui && npm start")
+        .spawn()
+        .expect("Failed to start UI Application");
     rocket().launch();
 }
